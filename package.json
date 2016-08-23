@@ -1,0 +1,14 @@
+{
+  "name": "v8fetch",
+  "version": "0.0.1",
+  "description": "Fetch polyfill for v8 (embedded in Go)",
+  "main": "index.js",
+  "scripts": { "test": "echo \"Error: no test specified\" && exit 1" },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "expose-loader": "^0.7.0",
+    "node-fetch": "^1.3.0",
+    "webpack": "^1.9.10"
+  }
+}
