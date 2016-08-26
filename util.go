@@ -2,17 +2,19 @@ package v8fetch
 
 import "net/http"
 
-// AddCookieHeader wraps Server and adds all of the cookie headers from
-// Reference into any request processed by it.  This can be used to copy cookies
-// from a client request to all fetch calls during server-side rendering
-type AddCookieHeader struct {
-	Server    http.Handler
-	Reference *http.Request
+// AddHeaders wraps Server and adds all of the provided headers to any
+// request processed by it.  This can be used to copy cookies from a client
+// request to all fetch calls during server-side rendering.
+type AddHeaders struct {
+	Server  http.Handler
+	Headers http.Header
 }
 
-func (a AddCookieHeader) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	for _, val := range a.Reference.Header["Cookie"] {
-		r.Header.Add("Cookie", val)
+func (a AddHeaders) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	for key, vals := range a.Headers {
+		for _, val := range vals {
+			r.Header.Add(key, val)
+		}
 	}
 	a.Server.ServeHTTP(w, r)
 }
