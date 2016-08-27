@@ -45,12 +45,11 @@ func Inject(ctx *v8.Context, server http.Handler) error {
 	if err != nil {
 		return fmt.Errorf("v8fetch injection failed: %v", err)
 	}
-	fetcher := syncFetcher{ctx, server}
+	fetcher := syncFetcher{server}
 	return fetch.Set("goFetchSync", ctx.Bind("goFetchSync", fetcher.FetchSync))
 }
 
 type syncFetcher struct {
-	ctx   *v8.Context
 	local http.Handler
 }
 
@@ -84,7 +83,7 @@ func (s syncFetcher) FetchSync(in v8.CallbackArgs) (*v8.Value, error) {
 			"v8fetch only supports http(s) or local (relative) URIs: %s", url)
 	}
 
-	return s.ctx.Create(resp)
+	return in.Context.Create(resp)
 }
 
 type options struct {
