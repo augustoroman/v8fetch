@@ -84,6 +84,27 @@ func TestRemoteFetch(t *testing.T) {
 	}
 }
 
+func TestHeaderOptions(t *testing.T) {
+	server := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Header.Get("extra") != "data" {
+			t.Errorf("missing external headers: %q", r.Header)
+		}
+		w.Header().Set("x-answer", r.Header.Get("x-favorite-number"))
+		fmt.Fprintf(w, "got foo")
+	})
+	ctx := v8.NewIsolate().NewContext()
+	Inject(ctx, server)
+	resp, err := parseResponse(runPromise(ctx, `
+		fetch("/foo", {headers:{extra:"data","x-favorite-number":"42"}})
+	`))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resp.Headers.Get("x-answer") != "42" {
+		t.Errorf("Wrong response headers: %q", resp.Headers)
+	}
+}
+
 var testServer = http.NewServeMux()
 
 func init() {

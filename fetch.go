@@ -66,6 +66,13 @@ func (s syncFetcher) FetchSync(in v8.CallbackArgs) (*v8.Value, error) {
 	if err := json.Unmarshal([]byte(in.Args[1].String()), &opts); err != nil {
 		return nil, fmt.Errorf("Cannot decode JSON options: %v", err)
 	}
+	// Make sure the header keys are capitalized correctly.  The node lib we
+	// use lower-cases everything.
+	for k, v := range opts.Headers {
+		adj := http.CanonicalHeaderKey(k)
+		delete(opts.Headers, k)
+		opts.Headers[adj] = v
+	}
 
 	var resp response
 	if strings.HasPrefix(url, "http") || strings.HasPrefix(url, "//") {
