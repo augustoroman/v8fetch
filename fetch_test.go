@@ -3,12 +3,13 @@ package v8fetch
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/augustoroman/v8"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/augustoroman/v8"
 )
 
 func TestLocalFetch(t *testing.T) {
@@ -98,8 +99,8 @@ func init() {
 func runPromise(ctx *v8.Context, promiseCode string) (*v8.Value, error) {
 	result := make(chan *v8.Value, 1)
 	ctx.Global().Set("sendToGo", ctx.Bind("sendToGo",
-		func(l v8.Loc, args ...*v8.Value) (*v8.Value, error) {
-			result <- args[0]
+		func(in v8.CallbackArgs) (*v8.Value, error) {
+			result <- in.Arg(0)
 			return nil, nil
 		}))
 	jsCode := promiseCode + ".then(sendToGo)"

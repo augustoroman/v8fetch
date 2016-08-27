@@ -54,16 +54,16 @@ type syncFetcher struct {
 	local http.Handler
 }
 
-func (s syncFetcher) FetchSync(l v8.Loc, args ...*v8.Value) (*v8.Value, error) {
-	if len(args) != 2 {
-		return nil, fmt.Errorf("Expected 2 args (url, options), got %d.", len(args))
+func (s syncFetcher) FetchSync(in v8.CallbackArgs) (*v8.Value, error) {
+	if len(in.Args) != 2 {
+		return nil, fmt.Errorf("Expected 2 args (url, options), got %d.", len(in.Args))
 	}
-	url := args[0].String()
+	url := in.Args[0].String()
 	opts := options{
 		Method:  "GET",
 		Headers: http.Header{},
 	}
-	if err := json.Unmarshal([]byte(args[1].String()), &opts); err != nil {
+	if err := json.Unmarshal([]byte(in.Args[1].String()), &opts); err != nil {
 		return nil, fmt.Errorf("Cannot decode JSON options: %v", err)
 	}
 
