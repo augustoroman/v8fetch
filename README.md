@@ -33,5 +33,5 @@ This program will output `<!DOCTYPE html>` to stdout.
 Like the duktape bindings, you can specify a local http instance with
 `http.Handler` interface as a the second parameter. It will be used for all
 local requests which url starts with `/`(single slash). See
-[the examples](https://github.com/augustoroman/v8-fetch/blob/master/example_test.go)
+[the examples](https://github.com/augustoroman/v8fetch/blob/master/example_test.go)
 for more detail.
