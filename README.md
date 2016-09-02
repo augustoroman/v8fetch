@@ -1,4 +1,4 @@
-# v8fetch [![GoDoc](https://godoc.org/github.com/augustoroman/v8fetch?status.png)](http://godoc.org/github.com/augustoroman/v8fetch)
+# v8fetch [![GoDoc](https://godoc.org/github.com/augustoroman/v8fetch?status.svg)](https://godoc.org/github.com/augustoroman/v8fetch)
 
 Fetch polyfill for [v8 bindings in go](https://github.com/augustoroman/v8) based
 off of [the duktape fetch bindings](https://github.com/olebedev/go-duktape-fetch/).
